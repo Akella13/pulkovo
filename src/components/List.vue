@@ -1,10 +1,11 @@
 <template>
   <ul>
-    <li v-for="el in list" :key="el.name">
+    <li v-for="el in list" :key="el.title">
       <input type="checkbox" v-model="el.done">
-      <h3>{{ el.name }}</h3>
+      <h3>{{ el.title }}</h3>
       <p>{{ el.desc }}</p>
       <span>{{ el.date }}</span>
+      <button @click="Remove(el.title)">Remove</button>
     </li>
   </ul>
 </template>
@@ -15,14 +16,14 @@ export default {
     return {
       list: [
         {
-          name: 'write app',
+          title: 'write app',
           desc: 'to-do list with descriptions',
           date: new Date(2021, 3, 25, 12, 0, 0),
           priority: 1,
           done: false,
         },
         {
-          name: 'new to-dos',
+          title: 'new to-dos',
           desc: 'come up with new list elements',
           date: new Date(2021, 3, 25, 12, 1, 0),
           priority: 2,
@@ -30,6 +31,11 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    Remove(str) {
+      this.list = this.list.filter(({ title }) => title !== str);
+    },
   },
 }
 </script>
