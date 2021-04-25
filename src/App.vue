@@ -1,15 +1,17 @@
 <template>
   <div id="app">
-    App entry
+    <List />
   </div>
 </template>
 
 <script>
+import List from '@/components/List';
 
 export default {
   name: 'App',
   components: {
-  }
+    List,
+  },
 }
 </script>
 
