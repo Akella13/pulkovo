@@ -9,6 +9,10 @@
       <textarea v-model="desc"></textarea>
     </label>
     <label>
+      Due Date
+      <input type="datetime-local" v-model="dueDate">
+    </label>
+    <label>
       Priority
       <select v-model="priority">
         <option v-for="(label, index) in priorityRange" :key="label" :value="index">
@@ -32,7 +36,8 @@ export default {
         'low',
         'medium',
         'high',
-      ]
+      ],
+      dueDate: null,
     };
   },
   methods: {
@@ -41,8 +46,9 @@ export default {
         title: this.title,
         desc: this.desc,
         priority: this.priority,
-        date: Date(),
-        done: false,
+        date: new Date(),
+        dueDate: new Date(this.dueDate),
+        checked: false,
       })
     },
   },
