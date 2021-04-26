@@ -4,7 +4,8 @@
       <input type="checkbox" v-model="el.checked">
       <h3>{{ el.title }}</h3>
       <p>{{ el.desc }}</p>
-      <span>{{ el.date }}</span>
+      <span>Created: {{ el.date }}</span>
+      <span>Due: {{ el.dueDate }}</span>
       <button @click="Edit(el)">Edit</button>
       <button @click="Remove(el.title)">Remove</button>
     </li>
@@ -21,7 +22,7 @@ export default {
           desc: 'to-do list with descriptions',
           date: new Date(2021, 3, 25, 12, 0, 0),
           dueDate: new Date(2021, 3, 27, 12, 0, 0),
-          priority: 1,
+          priority: 3,
           checked: false,
         },
         {
@@ -40,7 +41,9 @@ export default {
       this.list = this.list.filter(({ title }) => title !== str);
     },
     Edit(el) {
-      this.$emit('edit', el);
+      // console.log(el.date.toLocaleString())
+      this.$store.commit('updateProxy', el);
+      // this.$emit('edit', el);
     },
   },
 }

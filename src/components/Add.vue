@@ -2,19 +2,19 @@
   <form @submit.prevent="Submit">
     <label>
       Title
-      <input type="text" v-model="title">
+      <input type="text" :value="proxy.title">
     </label>
     <label>
       Description
-      <textarea v-model="desc"></textarea>
+      <textarea :value="proxy.desc"></textarea>
     </label>
     <label>
       Due Date
-      <input type="datetime-local" v-model="dueDate">
+      <input type="datetime-local" :value="parseDateToString(proxy.dueDate)">
     </label>
     <label>
       Priority
-      <select v-model="priority">
+      <select :value="proxy.priority">
         <option v-for="(label, index) in priorityRange" :key="label" :value="index">
           {{ label }}
         </option>
@@ -26,30 +26,51 @@
 
 <script>
 export default {
+  props: {
+    item: {
+      type: Object,
+      default: null,
+    },
+  },
   data() {
     return {
-      title: '',
-      desc: '',
-      priority: 0,
+      // title: '',
+      // desc: '',
+      // priority: 0,
       priorityRange: [
         'none',
         'low',
         'medium',
         'high',
       ],
-      dueDate: null,
+      // dueDate: null,
     };
+  },
+  computed: {
+    proxy() {
+      return this.$store.state.proxy;
+    },
   },
   methods: {
     Submit() {
-      this.$emit('addElement', {
-        title: this.title,
-        desc: this.desc,
-        priority: this.priority,
-        date: new Date(),
-        dueDate: new Date(this.dueDate),
-        checked: false,
-      })
+      // submit form fields
+      // this.$emit('addElement', {
+      //   title: this.title,
+      //   desc: this.desc,
+      //   priority: this.priority,
+      //   date: new Date(),
+      //   dueDate: new Date(this.dueDate),
+      //   checked: false,
+      // });
+      // reset form fields
+      this.$store.commit('resetProxy');
+    },
+    parseDateToString(date) {
+      if (date) {
+        const str = date.toISOString();
+        return str.slice(0, -3)
+      }
+      return null;
     },
   },
 }
