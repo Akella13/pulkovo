@@ -13,6 +13,7 @@ export default new Vuex.Store({
       priority: 0,
       checked: false,
     },
+    list: [],
   },
   mutations: {
     updateProxy(state, item) {
@@ -27,6 +28,16 @@ export default new Vuex.Store({
         priority: 0,
         checked: false,
       };
+    },
+    updateList(state, obj) {
+      let foundIndex = state.list.findIndex(({ title }) => title === obj.title)
+      // update existing item
+      if (foundIndex > -1) {
+        state.list[foundIndex] = { ...state.list[foundIndex], ...obj};
+      // create item
+      } else {
+        state.list.push(obj);
+      }
     },
   },
 })

@@ -36,14 +36,17 @@ export default {
       ],
     };
   },
+  computed: {
+    storeList() {
+      return this.$store.state.list;
+    }
+  },
   methods: {
     Remove(str) {
       this.list = this.list.filter(({ title }) => title !== str);
     },
     Edit(el) {
-      // console.log(el.date.toLocaleString())
       this.$store.commit('updateProxy', el);
-      // this.$emit('edit', el);
     },
   },
 }

@@ -66,7 +66,7 @@ export default {
     Submit() {
       const dueDate = this.formFields.dueDate;
       // emit form fields
-      this.$emit('submitElement', { 
+      this.$store.commit('updateList', { 
         ...this.formFields,
         dueDate: dueDate ? new Date(dueDate) : null,
       });
