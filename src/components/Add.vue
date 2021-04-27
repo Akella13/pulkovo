@@ -2,19 +2,19 @@
   <form @submit.prevent="Submit">
     <label>
       Title
-      <input type="text" :value="proxy.title">
+      <input type="text" v-model="formFields.title">
     </label>
     <label>
       Description
-      <textarea :value="proxy.desc"></textarea>
+      <textarea v-model="formFields.desc" />
     </label>
     <label>
       Due Date
-      <input type="datetime-local" :value="parseDateToString(proxy.dueDate)">
+      <input type="datetime-local" v-model="formFields.dueDate">
     </label>
     <label>
       Priority
-      <select :value="proxy.priority">
+      <select v-model="formFields.priority">
         <option v-for="(label, index) in priorityRange" :key="label" :value="index">
           {{ label }}
         </option>
@@ -34,16 +34,18 @@ export default {
   },
   data() {
     return {
-      // title: '',
-      // desc: '',
-      // priority: 0,
       priorityRange: [
         'none',
         'low',
         'medium',
         'high',
       ],
-      // dueDate: null,
+      formFields: {
+        title: '',
+        desc: '',
+        priority: 0,
+        dueDate: null,
+      },
     };
   },
   computed: {
@@ -51,17 +53,23 @@ export default {
       return this.$store.state.proxy;
     },
   },
+  watch: {
+    proxy(proxy) {
+      this.formFields = { ...this.formFields, ...proxy };
+      // datetime format
+      if (proxy.dueDate) {
+        this.formFields.dueDate = this.parseDateToString(proxy.dueDate);
+      }
+    },
+  },
   methods: {
     Submit() {
-      // submit form fields
-      // this.$emit('addElement', {
-      //   title: this.title,
-      //   desc: this.desc,
-      //   priority: this.priority,
-      //   date: new Date(),
-      //   dueDate: new Date(this.dueDate),
-      //   checked: false,
-      // });
+      const dueDate = this.formFields.dueDate;
+      // emit form fields
+      this.$emit('submitElement', { 
+        ...this.formFields,
+        dueDate: dueDate ? new Date(dueDate) : null,
+      });
       // reset form fields
       this.$store.commit('resetProxy');
     },
