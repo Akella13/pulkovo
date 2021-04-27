@@ -56,6 +56,7 @@ export default {
   watch: {
     proxy(proxy) {
       this.formFields = { ...this.formFields, ...proxy };
+      // BUG: incorrect time parsing
       // datetime format
       if (proxy.dueDate) {
         this.formFields.dueDate = this.parseDateToString(proxy.dueDate);

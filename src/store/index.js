@@ -13,7 +13,24 @@ export default new Vuex.Store({
       priority: 0,
       checked: false,
     },
-    list: [],
+    list: [
+      {
+        title: 'write app',
+        desc: 'to-do list with descriptions',
+        date: new Date(2021, 3, 25, 12, 0, 0),
+        dueDate: new Date(2021, 3, 27, 12, 0, 0),
+        priority: 3,
+        checked: false,
+      },
+      {
+        title: 'new to-dos',
+        desc: 'come up with new list elements',
+        date: new Date(2021, 3, 25, 12, 1, 0),
+        dueDate: null,
+        priority: 2,
+        checked: false,
+      },
+    ],
   },
   mutations: {
     updateProxy(state, item) {
@@ -34,10 +51,15 @@ export default new Vuex.Store({
       // update existing item
       if (foundIndex > -1) {
         state.list[foundIndex] = { ...state.list[foundIndex], ...obj};
+        // hack: makes list reactive
+        state.list = [ ...state.list ];
       // create item
       } else {
         state.list.push(obj);
       }
     },
+    removeListItem(state, str) {
+      state.list = state.list.filter(({ title }) => title !== str);
+    }
   },
 })

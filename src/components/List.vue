@@ -1,11 +1,11 @@
 <template>
   <ul>
-    <li v-for="el in list" :key="el.title">
+    <li v-for="el in storeList" :key="el.title">
       <input type="checkbox" v-model="el.checked">
       <h3>{{ el.title }}</h3>
       <p>{{ el.desc }}</p>
-      <span>Created: {{ el.date }}</span>
-      <span>Due: {{ el.dueDate }}</span>
+      <p>Created: {{ el.date }}</p>
+      <p>Due: {{ el.dueDate }}</p>
       <button @click="Edit(el)">Edit</button>
       <button @click="Remove(el.title)">Remove</button>
     </li>
@@ -14,28 +14,6 @@
 
 <script>
 export default {
-  data() {
-    return {
-      list: [
-        {
-          title: 'write app',
-          desc: 'to-do list with descriptions',
-          date: new Date(2021, 3, 25, 12, 0, 0),
-          dueDate: new Date(2021, 3, 27, 12, 0, 0),
-          priority: 3,
-          checked: false,
-        },
-        {
-          title: 'new to-dos',
-          desc: 'come up with new list elements',
-          date: new Date(2021, 3, 25, 12, 1, 0),
-          dueDate: null,
-          priority: 2,
-          checked: false,
-        },
-      ],
-    };
-  },
   computed: {
     storeList() {
       return this.$store.state.list;
@@ -43,7 +21,7 @@ export default {
   },
   methods: {
     Remove(str) {
-      this.list = this.list.filter(({ title }) => title !== str);
+      this.$store.commit('removeListItem', str);
     },
     Edit(el) {
       this.$store.commit('updateProxy', el);
