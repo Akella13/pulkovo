@@ -34,6 +34,18 @@ export default {
       return this.$store.state.list;
     }
   },
+  watch: {
+    storeList() {
+      localStorage.list = JSON.stringify(this.storeList);
+    },
+  },
+  mounted() {
+    // bind localstorage list if $store.list is empty
+    if (!this.storelist || this.storeList.length === 0) {
+      const list = this.ParseJSON(localStorage.list);
+      this.$store.commit('assignList', list);
+    }
+  },
   methods: {
     Remove(str) {
       this.$store.commit('removeListItem', str);
@@ -45,6 +57,14 @@ export default {
       this.$store.commit('sortList', this.sorting);
       this.sorting = !this.sorting;
     },
+    ParseJSON(list) {
+      const json = JSON.parse(list);
+      return json.map(el => {
+        el.date = new Date(el.date);
+        el.dueDate = new Date(el.dueDate);
+        return el;
+      });
+    }
   },
 }
 </script>
