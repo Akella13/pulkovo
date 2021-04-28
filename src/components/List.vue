@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     storeList() {
-      return this.$store.state.list;
+      return this.$store.state.list.list;
     }
   },
   watch: {

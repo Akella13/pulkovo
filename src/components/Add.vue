@@ -50,7 +50,7 @@ export default {
   },
   computed: {
     proxy() {
-      return this.$store.state.proxy;
+      return this.$store.state.proxy.proxy;
     },
   },
   watch: {
