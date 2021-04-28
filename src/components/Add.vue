@@ -63,12 +63,14 @@ export default {
   watch: {
     proxy(proxy) {
       this.formFields = { ...this.formFields, ...proxy };
-      // BUG: incorrect time parsing
       // datetime format
       if (proxy.dueDate) {
         this.formFields.dueDate = this.ParseDateToString(proxy.dueDate);
       }
     },
+  },
+  mounted() {
+    console.log('I would recommend to use Chrome in order to use whole possibilites of native datepicker');
   },
   methods: {
     Submit() {
@@ -84,8 +86,11 @@ export default {
     },
     ParseDateToString(date) {
       if (date) {
-        const str = date.toISOString();
-        return str.slice(0, -3)
+        // hack to shift timezone
+        const shift = new Date(date);
+        shift.setHours(date.getHours() + 3);
+        const str = shift.toISOString();
+        return str.slice(0, -1)
       }
       return null;
     },
