@@ -1,13 +1,14 @@
 <template>
   <section>
-    <div>
+    <header>
+      <button @click="Create">Create</button>
       <button @click="Sort">
         Sort
         <span v-if="sorting">&mapstodown;</span>
         <span v-else-if="sorting === null"></span>
         <span v-else>&mapstoup;</span>
       </button>
-    </div>
+    </header>
     <ul>
       <Item v-for="el in storeList" :key="el.title" :element="el" />
     </ul>
@@ -55,6 +56,10 @@ export default {
         el.dueDate = new Date(el.dueDate);
         return el;
       });
+    },
+    Create() {
+      this.$store.commit('resetProxy');
+      this.$store.commit('toggleModal');
     }
   },
 }

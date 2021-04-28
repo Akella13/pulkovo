@@ -1,27 +1,30 @@
 <template>
-  <form @submit.prevent="Submit">
-    <label>
-      Title
-      <input type="text" v-model="formFields.title">
-    </label>
-    <label>
-      Description
-      <textarea v-model="formFields.desc" />
-    </label>
-    <label>
-      Due Date
-      <input type="datetime-local" v-model="formFields.dueDate">
-    </label>
-    <label>
-      Priority
-      <select v-model="formFields.priority">
-        <option v-for="(label, index) in priorityRange" :key="label" :value="index">
-          {{ label }}
-        </option>
-      </select>
-    </label>
-    <button type="submit">Add</button>
-  </form>
+  <section v-show="showModal" class="form__wrapper">
+    <button @click="Close" class="form__close">&#88;</button>
+    <form @submit.prevent="Submit" class="form">
+      <label class="form__field">
+        Title
+        <input type="text" v-model="formFields.title" class="form__input" placeholder="Type in title" required>
+      </label>
+      <label class="form__field">
+        Description
+        <textarea v-model="formFields.desc" class="form__input"  placeholder="Add a description"/>
+      </label>
+      <label class="form__field">
+        Due Date
+        <input type="datetime-local" v-model="formFields.dueDate" class="form__input">
+      </label>
+      <label class="form__field">
+        Priority
+        <select v-model="formFields.priority" class="form__input">
+          <option v-for="(label, index) in priorityRange" :key="label" :value="index">
+            {{ label }}
+          </option>
+        </select>
+      </label>
+      <button class="form__field form__submit" type="submit">Add</button>
+    </form>
+  </section>
 </template>
 
 <script>
@@ -46,12 +49,16 @@ export default {
         priority: 0,
         dueDate: null,
       },
+      showForm: true,
     };
   },
   computed: {
     proxy() {
       return this.$store.state.proxy.proxy;
     },
+    showModal() {
+      return this.$store.state.modal.show;
+    }
   },
   watch: {
     proxy(proxy) {
@@ -59,7 +66,7 @@ export default {
       // BUG: incorrect time parsing
       // datetime format
       if (proxy.dueDate) {
-        this.formFields.dueDate = this.parseDateToString(proxy.dueDate);
+        this.formFields.dueDate = this.ParseDateToString(proxy.dueDate);
       }
     },
   },
@@ -73,14 +80,68 @@ export default {
       });
       // reset form fields
       this.$store.commit('resetProxy');
+      this.Close();
     },
-    parseDateToString(date) {
+    ParseDateToString(date) {
       if (date) {
         const str = date.toISOString();
         return str.slice(0, -3)
       }
       return null;
     },
+    Close() {
+      this.$store.commit('toggleModal')
+    },
   },
 }
 </script>
+
+<style>
+  .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    min-width: 400px;
+    background-color: aqua;
+    padding: 3em 2em;
+    border-radius: 5%;
+  }
+
+  .form__wrapper {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    background-color: rgba(123, 123, 123, 0.7);
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .form__close {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    padding: 0.5em 1em;
+    border-radius: 20%;
+  }
+
+  .form__field {
+    margin-bottom: 1em;
+    display: flex;
+    align-items: center;
+  }
+
+  .form__input {
+    margin-left: 1em;
+    width: 100%;
+  }
+
+  .form__submit {
+    align-self: center;
+    width: 100%;
+    max-width: 300px;
+  }
+</style>

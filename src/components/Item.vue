@@ -28,6 +28,7 @@ export default {
     },
     Edit(el) {
       this.$store.commit('updateProxy', el);
+      this.$store.commit('toggleModal');
     },
     DateToLocaleString(date) {
       if (date) {
