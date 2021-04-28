@@ -1,19 +1,34 @@
 <template>
-  <ul>
-    <li v-for="el in storeList" :key="el.title">
-      <input type="checkbox" v-model="el.checked">
-      <h3>{{ el.title }}</h3>
-      <p>{{ el.desc }}</p>
-      <p>Created: {{ el.date }}</p>
-      <p>Due: {{ el.dueDate }}</p>
-      <button @click="Edit(el)">Edit</button>
-      <button @click="Remove(el.title)">Remove</button>
-    </li>
-  </ul>
+  <section>
+    <div>
+      <button @click="Sort">
+        Sort
+        <span v-if="sorting">&mapstodown;</span>
+        <span v-else-if="sorting === null"></span>
+        <span v-else>&mapstoup;</span>
+      </button>
+    </div>
+    <ul>
+      <li v-for="el in storeList" :key="el.title">
+        <input type="checkbox" v-model="el.checked">
+        <h3>{{ el.title }}</h3>
+        <p>{{ el.desc }}</p>
+        <p>Created: {{ el.date }}</p>
+        <p>Due: {{ el.dueDate }}</p>
+        <button @click="Edit(el)">Edit</button>
+        <button @click="Remove(el.title)">Remove</button>
+      </li>
+    </ul>
+  </section>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      sorting: null,
+    };
+  },
   computed: {
     storeList() {
       return this.$store.state.list;
@@ -25,6 +40,10 @@ export default {
     },
     Edit(el) {
       this.$store.commit('updateProxy', el);
+    },
+    Sort() {
+      this.$store.commit('sortList', this.sorting);
+      this.sorting = !this.sorting;
     },
   },
 }

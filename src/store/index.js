@@ -60,6 +60,15 @@ export default new Vuex.Store({
     },
     removeListItem(state, str) {
       state.list = state.list.filter(({ title }) => title !== str);
-    }
+    },
+    sortList(state, order) {
+      state.list.sort((a, b) => {
+        const titleA = a.title.toLowerCase();
+        const titleB = b.title.toLowerCase();
+        // ascending = -1, descending = 1
+        const multiplier = titleA < titleB ? -1 : 1;
+        return order ? (-1) * multiplier : multiplier ;
+      });
+    },
   },
 })
